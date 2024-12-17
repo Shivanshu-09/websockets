@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, TextField, Button } from '@mui/material';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 
 const ChatBox = () => {
+  const [message, setMessage] = useState('');
+
+  const handleSend = () => {
+    console.log('Message sent:', message);
+    // Add your logic to handle the message here
+    setMessage(''); // Clear the input field after sending the message
+  };
   return (
     <Box
       sx={{
@@ -20,6 +27,8 @@ const ChatBox = () => {
         id="outlined-basic"
         label="Type your message"
         variant="outlined"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
         sx={{
           flexGrow: 1,
           marginRight: '10px', // Add some space between the TextField and the Button
@@ -29,6 +38,7 @@ const ChatBox = () => {
         variant="contained"
         color="primary"
         endIcon={<ArrowCircleRightIcon />}
+        onClick={handleSend}
       >
         Send
       </Button>
