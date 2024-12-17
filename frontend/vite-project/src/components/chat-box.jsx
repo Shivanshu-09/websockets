@@ -1,15 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, TextField, Button } from '@mui/material';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import { useStore } from '../store';
 
 const ChatBox = () => {
   const [message, setMessage] = useState('');
+  const [ws, setWs] = useState(null);
   const addMessage = useStore((state) => state.addMessage);
+  
+  useEffect(() => {
+    const socket = new WebSocket('ws://localhost:8000/ws');
+    setWs(socket);
+
+    socket.onopen = () => {
+      console.log('Connected to the WebSocket server');
+    };  
+
+    socket.onmessage = (event) => {
+      console.log('Got one message', event.data);
+      addMessage(event.data);
+    };
+    return () => {
+      socket.close();
+    };
+
+  }, [])
 
   const handleSend = () => {
-    console.log('Message sent:', message);
     addMessage(message);
+    if(ws && ws.readyState === WebSocket.OPEN) {
+      console.log('Message sent:', message);
+      ws.send(message);
+    }
     // Add your logic to handle the message here
     setMessage(''); // Clear the input field after sending the message
   };
