@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button } from '@mui/material';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import { useStore } from '../store';
 
 const ChatBox = () => {
   const [message, setMessage] = useState('');
+  const addMessage = useStore((state) => state.addMessage);
 
   const handleSend = () => {
     console.log('Message sent:', message);
+    addMessage(message);
     // Add your logic to handle the message here
     setMessage(''); // Clear the input field after sending the message
   };

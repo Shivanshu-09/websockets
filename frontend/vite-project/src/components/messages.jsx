@@ -2,8 +2,10 @@ import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
+import { useStore } from "../store";
 
 const Messages = () => {
+  const messages = useStore((state) => state.messages);
   return (
     <Box
       sx={{
@@ -30,18 +32,13 @@ const Messages = () => {
             secondary="This is the first message"
           />
         </ListItem>
-        <ListItem>
-          <ListItemText
-            primary="Message 2"
-            secondary="This is the second message"
-          />
-        </ListItem>
-        <ListItem>
-          <ListItemText
-            primary="Message 3"
-            secondary="This is the third message"
-          />
-        </ListItem>
+        {
+          messages.map((message, index) => (
+            <ListItem key={index}>
+              <ListItemText primary={message} />
+            </ListItem>
+          ))
+        }
       </List>
     </Box>
   );
